@@ -15,44 +15,42 @@ import com.jorge.curso.springboot.app.springboot_crud.repositories.RoleRepositor
 import com.jorge.curso.springboot.app.springboot_crud.repositories.UserRepository;
 
 
-
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository repository;
+
     @Autowired
     private RoleRepository roleRepository;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
-
-        return (List<User>)repository.findAll();
-        
+        return (List<User>) repository.findAll();
     }
 
     @Override
     @Transactional
     public User save(User user) {
 
-        Optional<Role> optionalRolUser= roleRepository.findByName("ROLE_USER");
-        List<Role> roles= new ArrayList<>();
-        optionalRolUser.ifPresent(roles::add);
+        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
+        List<Role> roles = new ArrayList<>();
 
-        if(user.isAdmin()){
-            Optional<Role> optionalRoleAdmin= roleRepository.findByName("ROLE_ADMIN");
+        optionalRoleUser.ifPresent(roles::add);
+
+        if (user.isAdmin()) {
+            Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
             optionalRoleAdmin.ifPresent(roles::add);
         }
-        user.setRoles(roles);
 
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
-
     }
-
+    
 }
+

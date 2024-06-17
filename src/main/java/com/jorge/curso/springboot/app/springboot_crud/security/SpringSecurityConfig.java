@@ -10,19 +10,20 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SpringSecurityConfig {
-
+    
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-
-        return http.authorizeHttpRequests((authz)->authz.requestMatchers("/api/users").permitAll().anyRequest().authenticated()).csrf((config)->config.disable())
-            .sessionManagement(management->management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-.build();
-
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests( (authz) -> authz
+        .requestMatchers("/api/users").permitAll()
+        .anyRequest().authenticated())
+        .csrf(config -> config.disable())
+        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
     }
-
 }
+

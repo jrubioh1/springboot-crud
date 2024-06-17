@@ -27,25 +27,25 @@ public class User {
 
     @Column(unique = true)
     @NotBlank
-    private String username;
-    
-    @NotBlank
     @Size(min = 4, max = 12)
+    private String username;
+
+    @NotBlank
     private String password;
 
     @ManyToMany
     @JoinTable(
         name = "users_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
+        joinColumns = @JoinColumn(name="user_id"),
         inverseJoinColumns = @JoinColumn(name="role_id"),
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})}
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"user_id", "role_id"})}
     )
     private List<Role> roles;
 
-    @Transient
-    private Boolean admin; 
+    private boolean enabled;
 
-    private Boolean enabled;
+    @Transient
+    private boolean admin;
 
     public Long getId() {
         return id;
@@ -79,26 +79,21 @@ public class User {
         this.roles = roles;
     }
 
-    public Boolean isAdmin() {
+    public boolean isAdmin() {
         return admin;
     }
 
-    public void setAdmin(Boolean admin) {
+    public void setAdmin(boolean admin) {
         this.admin = admin;
     }
 
-    public Boolean getAdmin() {
-        return admin;
-    }
-
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     
-
 }
